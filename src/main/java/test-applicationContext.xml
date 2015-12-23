@@ -16,6 +16,8 @@
 	<tx:annotation-driven />
 	<!--  -->
 	<context:annotation-config />
+	
+	
 						
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
@@ -28,36 +30,6 @@
 		<property name="dataSource" ref="dataSource" />  
 	</bean>
 	
-	<!--  
-	<aop:config>
-		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
-	</aop:config>
-	
-	<tx:advice id="transactionAdvice">
-		<tx:attributes>
-			<tx:method name="get*" read-only="true"/>
-			<tx:method name="*" />
-		</tx:attributes> 
-	</tx:advice>
-	 -->
-		
-	<!-- 
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
-	
-	<bean id="transactionAdvice" class="springbook.user.service.TransactionAdvice">
-		<property name="transactionManager" ref="transactionManager" />
-	</bean>
-	
-	<bean id="transactionPointcut" class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
-		<property name="expression" value="execution(* *..*ServiceImpl.upgrade*(..))" />
-	</bean>
-	
-	<bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
-		<property name="advice" ref="transactionAdvice" />
-		<property name="pointcut" ref="transactionPointcut" />
-	</bean> 
-	 -->
-	
 	<!--  application components -->
 	<bean id="userDao" class="springbook.user.dao.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
@@ -68,44 +40,17 @@
  	 -->
  	<bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
  		<property name="unmarshaller" ref="unmarshaller" />
+ 		<property name="sqlRegistry" ref="sqlRegistry" />
  	</bean>
  	
  	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
- 		<property name="contextPath" value="springbook.user.sqlservice.jaxb" />
+ 		<property name="contextPath" value="springbook.user.sqlservice.jaxb" /> 		
+ 	</bean>
+ 	
+ 	<bean id="sqlRegistry" class="springbook.user.sqlservice.updatable.ConcurrentHashMapSqlRegistry">
  	</bean>
 	
-<!-- 
-	<bean id ="sqlService" class="springbook.user.sqlservice.BaseSqlService">
-		<property name="sqlReader" ref="sqlReader" />
-		<property name="sqlRegistry" ref="sqlRegistry" />
-	</bean>
-	
-	<bean id="sqlReader" class="springbook.user.sqlservice.JaxbXmlSqlReader">
-		<property name="sqlmapFile" value="sqlmap.xml" />
-	</bean>
-	
-	<bean id="sqlRegistry" class="springbook.user.sqlservice.HashMapSqlRegistry" />
- -->
-	<!-- <bean id="simpleSqlService" class="springbook.user.sqlservice.SimpleSqlService">
-		<property name="sqlMap">
-			<map>
-				<entry key="userAdd" 
-				       value="insert into users(id, name, password, email, level, login, recommend) 
-				         values(?,?,?,?,?,?,?)" />
-				<entry key="userGet" 
-				       value="select * from users where id = ?" />
-				<entry key="userDeleteAll"
-				 	   value="delete from users" />
-				<entry key="userGetCount" 
-				       value="select count(*) from users" />
-				<entry key="userGetAll"
-				 	   value="select * from users order by id" />
-				<entry key="userUpdate" 
-				 	   value="update users set name = ?, password = ?, email = ?, level = ?, login = ?,
-				              recommend = ? where id = ? " /> 	   
-			</map>
-		</property>
-	</bean> -->
+
 	
 	<bean id="userService" class="springbook.user.service.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
@@ -120,4 +65,6 @@
 	</bean>
 	 -->
 	<bean id="mailSender" class="springbook.user.service.DummyMailSender" />
+	
+	
 </beans>
