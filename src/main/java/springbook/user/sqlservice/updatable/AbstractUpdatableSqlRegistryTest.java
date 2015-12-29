@@ -29,10 +29,10 @@ public abstract class AbstractUpdatableSqlRegistryTest {
 
 	@Test
 	public void find() throws SqlNotFoundException{
-		checkFindResult("SQL1","SQL2","SQL3");
+		checkFind("SQL1","SQL2","SQL3");
 	}
 
-	protected void checkFindResult(String expected1, String expected2, String expected3) throws SqlNotFoundException {
+	protected void checkFind(String expected1, String expected2, String expected3) throws SqlNotFoundException {
 		assertThat(sqlRegistry.findSql("KEY1"), is(expected1));
 		assertThat(sqlRegistry.findSql("KEY2"), is(expected2));
 		assertThat(sqlRegistry.findSql("KEY3"), is(expected3));
@@ -46,7 +46,7 @@ public abstract class AbstractUpdatableSqlRegistryTest {
 	@Test
 	public void updateSingle() throws SqlNotFoundException{
 		sqlRegistry.updateSql("KEY2","Modified2");
-		checkFindResult("SQL1", "Modified2", "SQL3");
+		checkFind("SQL1", "Modified2", "SQL3");
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public abstract class AbstractUpdatableSqlRegistryTest {
 		sqlmap.put("KEY3", "Modified3");
 		
 		sqlRegistry.updateSql(sqlmap);
-		checkFindResult("Modified1", "SQL2", "Modified3");
+		checkFind("Modified1", "SQL2", "Modified3");
 	}
 	
 	@Test(expected=SqlUpdateFailureException.class)

@@ -20,15 +20,14 @@ public class EmbeddedDbSqlRegistry implements UpdatableSqlRegistry {
 
 	@Override
 	public void registerSql(String key, String sql) {
-		jdbc.update("insert into sqlmap(key_, sql_ values(?,?)", key, sql); 
+		jdbc.update("insert into sqlmap(key_, sql_ ) values(?,?)", key, sql); 
 	}
 
 	@Override
 	public String findSql(String key) throws SqlNotFoundException {
 		
-		
 		try{ return jdbc.queryForObject(
-				"select sql_ from sqlmap where key = ?", 
+				"select sql_ from sqlmap where key_ = ?", 
 				String.class, 
 				key);
 		}catch(EmptyResultDataAccessException e){
