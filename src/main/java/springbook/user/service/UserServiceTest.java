@@ -31,12 +31,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import springbook.TestApplicationContext;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/test-applicationContext.xml")
+/*@ContextConfiguration(locations="/test-applicationContext.xml")*/
+@ContextConfiguration(classes=TestApplicationContext.class)
 public class UserServiceTest {
 	@Autowired UserService userService;	
 	@Autowired UserService testUserService;
@@ -51,11 +53,11 @@ public class UserServiceTest {
 	@Before
 	public void setUp() {
 		users = Arrays.asList(
-				new User("bumjin", "¹Ú¹üÁø", "p1", "user1@ksug.org", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0),
-				new User("joytouch", "°­¸í¼º", "p2", "user2@ksug.org", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
-				new User("erwins", "½Å½ÂÇÑ", "p3", "user3@ksug.org", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD-1),
-				new User("madnite1", "ÀÌ»óÈ£", "p4", "user4@ksug.org", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD),
-				new User("green", "¿À¹Î±Ô", "p5", "user5@ksug.org", Level.GOLD, 100, Integer.MAX_VALUE)
+				new User("bumjin", "ï¿½Ú¹ï¿½ï¿½ï¿½", "p1", "user1@ksug.org", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0),
+				new User("joytouch", "ï¿½ï¿½ï¿½ï¿½", "p2", "user2@ksug.org", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
+				new User("erwins", "ï¿½Å½ï¿½ï¿½ï¿½", "p3", "user3@ksug.org", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD-1),
+				new User("madnite1", "ï¿½Ì»ï¿½È£", "p4", "user4@ksug.org", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD),
+				new User("green", "ï¿½ï¿½ï¿½Î±ï¿½", "p5", "user5@ksug.org", Level.GOLD, 100, Integer.MAX_VALUE)
 				);
 	}
 
@@ -169,7 +171,7 @@ public class UserServiceTest {
 	public void add() {
 		userDao.deleteAll();
 		
-		User userWithLevel = users.get(4);	  // GOLD ·¹º§  
+		User userWithLevel = users.get(4);	  // GOLD ï¿½ï¿½ï¿½ï¿½  
 		User userWithoutLevel = users.get(0);  
 		userWithoutLevel.setLevel(null);
 		
@@ -210,7 +212,7 @@ public class UserServiceTest {
 		userService.add(users.get(1));
 	}
 	
-	static class TestUserService extends UserServiceImpl {
+	public static class TestUserService extends UserServiceImpl {
 		private String id = "madnite1"; // users(3).getId()
 		
 		protected void upgradeLevel(User user) {
