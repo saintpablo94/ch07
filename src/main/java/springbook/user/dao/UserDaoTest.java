@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.beans.Beans;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,24 +14,29 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import springbook.TestApplicationContext;
+import springbook.AppContext;
+import springbook.TestAppContext;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 /*@ContextConfiguration(locations="/test-applicationContext.xml")*/
-@ContextConfiguration(classes=TestApplicationContext.class)
+@ActiveProfiles("test")
+@ContextConfiguration(classes=AppContext.class)
 public class UserDaoTest {
 	@Autowired UserDao dao; 
 	@Autowired DataSource dataSource;
+	@Autowired DefaultListableBeanFactory bFactory;
 	
 	private User user1;
 	private User user2;
@@ -41,6 +47,15 @@ public class UserDaoTest {
 		this.user1 = new User("gyumee", "�ڼ�ö", "springno1", "user1@ksug.org", Level.BASIC, 1, 0);
 		this.user2 = new User("leegw700", "�̱��", "springno2", "user2@ksug.org", Level.SILVER, 55, 10);
 		this.user3 = new User("bumjin", "�ڹ���", "springno3", "user3@ksug.org", Level.GOLD, 100, 40);
+	}
+	
+	@Test
+	public void Beans(){
+		
+		for (String n : bFactory.getBeanDefinitionNames()) {
+			System.out.println("====================: "+n+"\t"+bFactory.getBean(n).getClass().getName());
+		}
+		
 	}
 	
 	@Test 

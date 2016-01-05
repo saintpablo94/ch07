@@ -2,19 +2,23 @@ package springbook.user.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
+@Service("userService")
 public class UserServiceImpl implements UserService {
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECCOMEND_FOR_GOLD = 30;
 
-	private UserDao userDao;
-	private MailSender mailSender;
+	@Autowired private UserDao userDao;
+	@Autowired private MailSender mailSender;
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -53,8 +57,8 @@ public class UserServiceImpl implements UserService {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(user.getEmail());
 		mailMessage.setFrom("useradmin@ksug.org");
-		mailMessage.setSubject("Upgrade ¾È³»");
-		mailMessage.setText("»ç¿ëÀÚ´ÔÀÇ µî±ÞÀÌ " + user.getLevel().name());
+		mailMessage.setSubject("Upgrade ï¿½È³ï¿½");
+		mailMessage.setText("ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ " + user.getLevel().name());
 		
 		this.mailSender.send(mailMessage);
 	}
